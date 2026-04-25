@@ -17,10 +17,35 @@ export default function DashboardPage() {
   const [location, setLocation] = useState<{ lat: number, lng: number } | null>(null);
   const [address, setAddress] = useState<string>("Đang xác định vị trí...");
   const [branding, setBranding] = useState({ name: "Công ty", address: "" });
+  const [showPWAInfo, setShowPWAInfo] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const supabase = createClient();
 
   // Watch location
   useEffect(() => {
+    // Detect Platform for PWA
+    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    setIsIOS(isIosDevice);
+
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowPWAInfo(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    
+    // Check if already in standalone mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    if (!isStandalone) {
+      const lastDismissed = localStorage.getItem('pwa_dismissed');
+      const now = new Date().getTime();
+      if (!lastDismissed || now - parseInt(lastDismissed) > 86400000 * 7) { // 1 week
+        setShowPWAInfo(true);
+      }
+    }
+
     if (!navigator.geolocation) return;
     const watchId = navigator.geolocation.watchPosition(
       async (pos) => {
@@ -37,8 +62,45 @@ export default function DashboardPage() {
       () => setAddress("Vui lòng bật GPS để xem vị trí"),
       { enableHighAccuracy: true }
     );
-    return () => navigator.geolocation.clearWatch(watchId);
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+      setShowPWAInfo(false);
+    }
+  };
+
+  const refreshLocation = () => {
+    setAddress("Đang làm mới vị trí...");
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setLocation({ lat: latitude, lng: longitude });
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`);
+          const d = await res.json();
+          setAddress(d.display_name || `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+        } catch {
+          setAddress(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+        }
+      },
+      () => setAddress("Lỗi khi định vị. Thử lại?"),
+      { enableHighAccuracy: true }
+    );
+  };
+
+  const dismissPWA = () => {
+    setShowPWAInfo(false);
+    localStorage.setItem('pwa_dismissed', new Date().getTime().toString());
+  };
 
   const fetchData = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -110,6 +172,38 @@ export default function DashboardPage() {
 
   return (
     <main className="px-4 py-6 space-y-5 max-w-md mx-auto pb-12">
+      {/* PWA Install Guide */}
+      {showPWAInfo && (
+        <div className="bg-slate-900 text-white p-4 rounded-[24px] relative overflow-hidden animate-in slide-in-from-top duration-500 shadow-xl">
+          <div className="absolute top-0 right-0 p-2">
+            <button onClick={dismissPWA} className="p-1 opacity-50 hover:opacity-100">
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-white">install_mobile</span>
+            </div>
+            <div className="space-y-1 flex-1">
+              <p className="text-[13px] font-black leading-tight">Cài đặt ứng dụng lên màn hình</p>
+              <p className="text-[10px] text-slate-400 font-bold leading-relaxed">
+                {isIOS 
+                  ? "Nhấn vào biểu tượng Chia sẻ (ô vuông mũi tên lên) ở dưới trình duyệt, sau đó chọn 'Thêm vào MH chính'."
+                  : "Tạo biểu tượng ngoài màn hình để truy cập nhanh chóng và tiện lợi hơn."}
+              </p>
+              {!isIOS && deferredPrompt && (
+                <button 
+                  onClick={handleInstallClick}
+                  className="mt-2 px-4 py-1.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+                >
+                  Cài đặt ngay
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Profile Section */}
       <section className="flex flex-col">
         <h1 className="text-[22px] xs:text-[24px] font-black text-on-surface leading-tight">
@@ -177,12 +271,19 @@ export default function DashboardPage() {
             <h2 className="text-[16px] font-black text-on-surface">Chấm công ngay</h2>
             <div className="flex items-center gap-1 text-on-surface-variant/60">
               <span className="material-symbols-outlined text-[14px] text-primary">location_on</span>
-              <span className="text-[10px] font-bold truncate">{address}</span>
+              <span className="text-[10px] font-bold leading-tight">{address}</span>
             </div>
           </div>
-          <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300">
-            <span className="material-symbols-outlined text-sm">arrow_forward_ios</span>
-          </div>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              refreshLocation();
+            }}
+            className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary active:bg-primary/10 transition-colors shadow-sm"
+          >
+            <span className="material-symbols-outlined text-sm">my_location</span>
+          </button>
         </div>
       </Link>
 

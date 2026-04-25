@@ -78,6 +78,7 @@ export default function LoginPage() {
           className="object-cover opacity-25 mix-blend-overlay"
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1000"
           priority
+          unoptimized
         />
         <div className="relative z-10 flex flex-col items-center text-center p-6 w-full">
           {branding.logo ? (
