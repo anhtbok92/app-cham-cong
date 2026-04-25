@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import LoadingState from "@/components/LoadingState";
 
 export default function AdminPayrollPage() {
@@ -9,17 +9,17 @@ export default function AdminPayrollPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchPayroll();
-  }, [month]);
-
-  const fetchPayroll = async () => {
+  const fetchPayroll = useCallback(async () => {
     setLoading(true);
     const res = await fetch(`/api/admin/payroll?month=${month}`);
     const data = await res.json();
     if (Array.isArray(data)) setPayroll(data);
     setLoading(false);
-  };
+  }, [month]);
+
+  useEffect(() => {
+    fetchPayroll();
+  }, [fetchPayroll]);
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('vi-VN').format(val);

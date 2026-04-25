@@ -167,7 +167,7 @@ export default function LeaveRequestPage() {
                 </div>
                 {req.reason && (
                   <p className="text-[12px] text-on-surface-variant italic opacity-70 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    "{req.reason}"
+                    &quot;{req.reason}&quot;
                   </p>
                 )}
                 {req.comment && (

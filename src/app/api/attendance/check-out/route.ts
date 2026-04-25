@@ -1,33 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 import { isWithinAllowedRadius, validateCoordinates } from "@/lib/geo/haversine";
 import { calculateWorkHours } from "@/lib/attendance/work-hours";
 import { createNotification } from "@/lib/notifications/service";
 import type { OfficeLocation } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
-  const cookieStore = cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // ignored in route handlers
-          }
-        },
-      },
-    }
-  );
+  const supabase = createClient();
 
   // 1. Authenticate
   const { data: { user }, error: authError } = await supabase.auth.getUser();

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 
 const NAV_ITEMS = [
   { href: "/admin/employees", label: "Quản lý nhân viên", icon: "groups" },
@@ -50,7 +51,7 @@ export default function AdminSidebar() {
     <aside className="fixed left-0 h-screen w-64 bg-primary-container text-white flex flex-col py-4 z-50 shadow-xl overflow-x-hidden">
       <div className="px-6 mb-8 flex items-center gap-3">
         {branding.logo ? (
-          <img src={branding.logo} alt="Logo" className="w-10 h-10 rounded-xl object-contain bg-white p-1" />
+          <Image src={branding.logo} alt="Logo" width={40} height={40} className="rounded-xl object-contain bg-white p-1" unoptimized />
         ) : (
           <div className="w-10 h-10 rounded-xl bg-blue-400 flex items-center justify-center text-white font-black text-xl">
             {branding.name.charAt(0)}

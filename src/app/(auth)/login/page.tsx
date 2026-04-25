@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -71,15 +72,17 @@ export default function LoginPage() {
     <main className="min-h-screen flex flex-col text-on-background items-center justify-start w-full max-w-md mx-auto px-6 py-8">
       {/* Header Banner */}
       <div className="w-full relative shrink-0 rounded-[40px] overflow-hidden shadow-2xl h-56 bg-gradient-to-br from-primary to-blue-700 flex items-center justify-center">
-        <img
+        <Image
           alt="Office"
-          className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay"
+          fill
+          className="object-cover opacity-25 mix-blend-overlay"
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1000"
+          priority
         />
         <div className="relative z-10 flex flex-col items-center text-center p-6 w-full">
           {branding.logo ? (
             <div className="bg-white p-3.5 rounded-[24px] mb-4 shadow-xl">
-              <img src={branding.logo} alt="Logo" className="w-14 h-14 object-contain" />
+              <Image src={branding.logo} alt="Logo" width={56} height={56} className="object-contain" unoptimized />
             </div>
           ) : (
             <div className="bg-white/20 backdrop-blur-xl p-5 rounded-[24px] mb-4 border border-white/30 shadow-inner">
