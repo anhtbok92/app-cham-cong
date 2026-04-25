@@ -1,0 +1,134 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { isWithinAllowedRadius, validateCoordinates } from "@/lib/geo/haversine";
+import { createNotification } from "@/lib/notifications/service";
+import type { OfficeLocation } from "@/lib/types";
+
+export async function POST(request: NextRequest) {
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // ignored in route handlers
+          }
+        },
+      },
+    }
+  );
+
+  // 1. Authenticate
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ message: "Phiên làm việc hết hạn. Vui lòng đăng nhập lại." }, { status: 401 });
+  }
+
+  // 2. Parse & Validate Coordinates
+  let latitude: number;
+  let longitude: number;
+  try {
+    const body = await request.json();
+    latitude = body.latitude;
+    longitude = body.longitude;
+    validateCoordinates({ latitude, longitude });
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message || "Tọa độ không hợp lệ." }, { status: 400 });
+  }
+
+  // 3. Get employee profile and office
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("*, office_locations(*)")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) {
+    return NextResponse.json({ message: "Không tìm thấy hồ sơ nhân viên." }, { status: 404 });
+  }
+
+  if (!profile.office_locations) {
+    return NextResponse.json(
+      { message: "Bạn chưa được gán địa điểm làm việc. Vui lòng liên hệ Admin.", code: "NO_LOCATION" },
+      { status: 400 }
+    );
+  }
+
+  const office = profile.office_locations as OfficeLocation;
+
+  // 4. Validate Distance
+  const geoResult = isWithinAllowedRadius(
+    { latitude, longitude },
+    { latitude: office.latitude, longitude: office.longitude },
+    office.allowed_radius
+  );
+
+  if (!geoResult.isWithinRadius) {
+    return NextResponse.json({
+      message: `Bạn đang ở ngoài phạm vi cho phép (${Math.round(geoResult.distanceInMeters)}m). Vui lòng di chuyển lại gần văn phòng hơn.`,
+      code: "OUT_OF_RANGE"
+    }, { status: 403 });
+  }
+
+  // 5. Check for existing open session
+  const { data: activeRecord, error: activeError } = await supabase
+    .from("attendance_records")
+    .select("id")
+    .eq("employee_id", user.id)
+    .is("check_out_time", null)
+    .maybeSingle();
+
+  if (activeError) {
+    return NextResponse.json({ message: "Lỗi kiểm tra trạng thái chấm công." }, { status: 500 });
+  }
+
+  if (activeRecord) {
+    return NextResponse.json({ 
+      message: "Bạn đang có một lượt chấm công chưa kết thúc. Vui lòng check-out trước khi bắt đầu lượt mới.",
+      code: "ACTIVE_SESSION" 
+    }, { status: 409 });
+  }
+
+  // 6. Create record
+  const today = new Date().toISOString().split("T")[0];
+  const { data: record, error: insertError } = await supabase
+    .from("attendance_records")
+    .insert({
+      employee_id: user.id,
+      check_in_time: new Date().toISOString(),
+      check_in_latitude: latitude,
+      check_in_longitude: longitude,
+      date: today,
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    console.error("Insert Error:", insertError);
+    // If we still get a 500 here after migration 011, it might be due to RLS or other constraints
+    return NextResponse.json({ 
+      message: "Không thể ghi nhận chấm công. " + (insertError.code === "23505" ? "Bạn đã chấm công cho ngày hôm nay rồi (Vui lòng chạy migration 011)." : "Lỗi hệ thống."),
+      details: insertError.message 
+    }, { status: 500 });
+  }
+
+  // Create real notification
+  await createNotification({
+    userId: user.id,
+    title: "Chấm công thành công",
+    message: `Bạn đã check-in vào lúc ${new Date().toLocaleTimeString("vi-VN", { hour: '2-digit', minute: '2-digit' })} tại ${office.name}.`,
+    type: "attendance"
+  });
+
+  return NextResponse.json({ success: true, record });
+}

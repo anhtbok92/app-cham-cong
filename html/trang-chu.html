@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0070eb",
+                        "on-secondary-fixed": "#161c22",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414755",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#c64f00",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "surface-dim": "#d8d9e5",
+                        "surface-tint": "#005bc1",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0fc",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-container": "#5f656c",
+                        "on-background": "#181c23",
+                        "on-primary-fixed-variant": "#004493",
+                        "inverse-surface": "#2d3039",
+                        "surface-container": "#ecedf9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8f3",
+                        "secondary-fixed": "#dee3eb",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#9e3d00",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dee3eb",
+                        "inverse-primary": "#adc6ff",
+                        "outline": "#717786",
+                        "on-surface": "#181c23",
+                        "primary-fixed": "#d8e2ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#42474e",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-low": "#f1f3fe",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#e0e2ed",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-container-highest": "#e0e2ed",
+                        "secondary": "#595f66",
+                        "primary": "#0058bc",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-primary-container": "#fefcff",
+                        "secondary-fixed-dim": "#c2c7cf",
+                        "outline-variant": "#c1c6d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "gutter-card": "12px",
+                        "margin-page": "16px",
+                        "padding-element": "16px",
+                        "stack-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Manrope"],
+                        "body-main": ["Manrope"],
+                        "display-time": ["Manrope"],
+                        "heading-md": ["Manrope"],
+                        "status-text": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-time": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "heading-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "status-text": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen pb-24">
+    <!-- TopAppBar -->
+    <header
+        class="flex justify-between items-center px-4 h-16 w-full sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-200">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                <img alt="Employee Profile Picture" class="w-full h-full object-cover"
+                    data-alt="Close-up portrait of a professional young Vietnamese man in a white collared shirt against a clean neutral office background"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZmgN3GBdVdZ5rX-PEnwuBA3bjnS8n9YFYh1IMBwfXulLq_2bHX4Kyjfg1sWP0NngAgoj6bqHp4cM7MyGl8iWPbO0R8NMxlXJSl8C0Jc7H8R3Dza5guHJEOMjDH71zQZUpIQAhzV4TvOkC7obBY6Vn1DxXQxHvzZyCycX8DSE8PlTUu_L0o9qEHO5Yv8KrRsSev_HHi44f2CTLQgz84d0p9IAQY1O4Se1Q_P5W6w3E4wMb8FW5xnHDxz88YWENt9oqhUg1CLE-TQ" />
+            </div>
+            <div class="flex flex-col">
+                <span class="font-manrope text-lg font-bold text-blue-700 dark:text-blue-500 leading-tight">TimeTrack
+                    Pro</span>
+                <span class="font-label-caps text-[10px] text-on-surface-variant">ID: NV0123</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200">
+                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400"
+                    data-icon="notifications">notifications</span>
+            </button>
+        </div>
+    </header>
+    <main class="px-4 py-6 space-y-6">
+        <!-- Profile & Status Section -->
+        <section class="space-y-4">
+            <div class="flex flex-col">
+                <h1 class="font-heading-md text-heading-md text-on-surface">Chào buổi sáng, Nguyễn Văn A</h1>
+                <p class="font-body-main text-status-text text-on-surface-variant">Nhân viên kinh doanh</p>
+            </div>
+            <!-- Status Card -->
+            <div
+                class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-slate-50 dark:border-slate-700 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary"
+                            data-icon="calendar_today">calendar_today</span>
+                        <span class="font-label-caps text-label-caps">Thứ Hai, 22 Tháng 5</span>
+                    </div>
+                    <div
+                        class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-[12px] font-semibold">
+                        Đang làm việc
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <p class="font-label-caps text-[11px] text-on-surface-variant">GIỜ VÀO</p>
+                        <div class="flex flex-col">
+                            <span class="font-display-time text-heading-md text-primary">08:00</span>
+                            <span class="text-[11px] text-green-600 font-medium">(Đúng giờ)</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1 border-l border-slate-100 dark:border-slate-700 pl-4">
+                        <p class="font-label-caps text-[11px] text-on-surface-variant">GIỜ RA</p>
+                        <div class="flex flex-col">
+                            <span class="font-display-time text-heading-md text-slate-400">17:30</span>
+                            <span class="text-[11px] text-slate-400 font-medium">(Chưa chấm công)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Main Action Section (Clock-in Button) -->
+        <section class="relative">
+            <div class="absolute inset-0 bg-primary/5 rounded-2xl -rotate-1"></div>
+            <div
+                class="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-primary/10 text-center flex flex-col items-center gap-4 overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-5">
+                    <span class="material-symbols-outlined text-8xl" data-icon="fingerprint">fingerprint</span>
+                </div>
+                <div
+                    class="w-20 h-20 bg-primary-container rounded-full flex items-center justify-center shadow-lg shadow-primary/30 active:scale-90 transition-transform">
+                    <span class="material-symbols-outlined text-white text-4xl" data-icon="fingerprint"
+                        style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+                </div>
+                <div class="space-y-1">
+                    <h2 class="font-heading-md text-heading-md text-primary">Chấm công</h2>
+                    <div class="flex items-center justify-center gap-1 text-on-surface-variant">
+                        <span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                        <span class="font-status-text text-status-text">72 Trần Hưng Đạo, Quận 1, TP.HCM</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Feature Bento Grid -->
+        <section class="grid grid-cols-3 gap-3">
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400"
+                        data-icon="history">history</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Lịch sử chấm công</span>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400"
+                        data-icon="table_chart">table_chart</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Bảng công tháng</span>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400"
+                        data-icon="event_busy">event_busy</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Xin nghỉ phép</span>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400"
+                        data-icon="notifications_active">notifications_active</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Thông báo</span>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-700/50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-600 dark:text-slate-400"
+                        data-icon="person_search">person_search</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Hồ sơ cá nhân</span>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-50 dark:border-slate-700 flex flex-col items-center justify-center gap-2 aspect-square active:bg-slate-50 transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-700/50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-600 dark:text-slate-400"
+                        data-icon="settings">settings</span>
+                </div>
+                <span class="font-label-caps text-[11px] text-center leading-tight">Cài đặt</span>
+            </div>
+        </section>
+        <!-- Location Preview (Minimalist Map) -->
+        <section class="space-y-3">
+            <h3 class="font-label-caps text-label-caps text-on-surface-variant px-1">Vị trí hiện tại</h3>
+            <div
+                class="h-32 rounded-xl overflow-hidden relative shadow-sm border border-slate-100 dark:border-slate-800">
+                <img alt="Map view" class="w-full h-full object-cover grayscale opacity-60"
+                    data-alt="Stylized minimalist map of a modern city grid with blue and grey tones and a prominent circular location pin"
+                    data-location="Ho Chi Minh City"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNQleHRlt-Is8h4tMPx1WTNoJvzxb1Sy2QLn7ProGvUs00SDj0T_4Jl4XYZjNaL2wZmckNwcU-uUccYs4W1U_okicmUo0uT0pZkSNvd5W42LXOlgLBLLXu8SZXAVN3qdFaetzPBkNXC68i2G_YmE772EHRtabNU9NgsLQ_KADPsyYLpWnYDSn3RB56D3QpA-GW-9oq0BrIM9EdSKmuhryofANUGgRs8fWJcqTtlLgbYg9UoEnDRdEhBRyTo0LEPwH_5OOMF_93aw" />
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center animate-pulse">
+                        <div class="w-4 h-4 bg-primary rounded-full shadow-lg shadow-primary"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+        <a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl px-3 py-1 transition-transform duration-150 scale-95 active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home"
+                style="font-variation-settings: 'FILL' 1;">home</span>
+            <span class="font-manrope text-[10px] font-semibold">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-transform duration-150 active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="history">history</span>
+            <span class="font-manrope text-[10px] font-semibold">History</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-transform duration-150 active:scale-90"
+            href="#">
+            <div class="bg-primary p-2 rounded-full -mt-8 shadow-lg shadow-primary/30">
+                <span class="material-symbols-outlined text-white" data-icon="fingerprint">fingerprint</span>
+            </div>
+            <span class="font-manrope text-[10px] font-semibold mt-1">Check-in</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-transform duration-150 active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+            <span class="font-manrope text-[10px] font-semibold">Request</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-transform duration-150 active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="font-manrope text-[10px] font-semibold">Profile</span>
+        </a>
+    </nav>
+</body>
+
+</html>

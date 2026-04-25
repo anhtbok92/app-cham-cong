@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0070eb",
+                        "on-secondary-fixed": "#161c22",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414755",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#c64f00",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "surface-dim": "#d8d9e5",
+                        "surface-tint": "#005bc1",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0fc",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-container": "#5f656c",
+                        "on-background": "#181c23",
+                        "on-primary-fixed-variant": "#004493",
+                        "inverse-surface": "#2d3039",
+                        "surface-container": "#ecedf9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8f3",
+                        "secondary-fixed": "#dee3eb",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#9e3d00",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dee3eb",
+                        "inverse-primary": "#adc6ff",
+                        "outline": "#717786",
+                        "on-surface": "#181c23",
+                        "primary-fixed": "#d8e2ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#42474e",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-low": "#f1f3fe",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#e0e2ed",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-container-highest": "#e0e2ed",
+                        "secondary": "#595f66",
+                        "primary": "#0058bc",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-primary-container": "#fefcff",
+                        "secondary-fixed-dim": "#c2c7cf",
+                        "outline-variant": "#c1c6d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "gutter-card": "12px",
+                        "margin-page": "16px",
+                        "padding-element": "16px",
+                        "stack-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Manrope"],
+                        "body-main": ["Manrope"],
+                        "display-time": ["Manrope"],
+                        "heading-md": ["Manrope"],
+                        "status-text": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-time": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "heading-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "status-text": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #f9f9ff;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .login-illustration {
+            background: linear-gradient(135deg, #0058bc 0%, #0070eb 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col text-on-background">
+    <main class="flex-grow flex flex-col items-center justify-start w-full max-w-md mx-auto px-margin-page py-8">
+        <div
+            class="w-full relative mb-10 mt-4 rounded-3xl overflow-hidden shadow-2xl h-64 login-illustration flex items-center justify-center">
+            <img alt="Office setup" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
+                data-alt="Modern minimalist office interior with sleek desks, ergonomic chairs, and large windows with soft morning sunlight streaming in"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQzaIA28frPfOr5tiHswlKncOCaJYW84bgGgrXJhyWtlsBRrVJVCWukCZZJQ4r4YnH7C-QMMoa8k0p0sqqkh-Z2bI1yz9qPFX0stJFiMbf5COMkZ2IiP_rCUslnCteS57X2mxgn-U3-dWAQ2yrm52pSnf0ePczY1IQtzewKAuaQIavN2JNG1MkK9ETazX48dxNHzNLk7obXGMC0MA7Fgj_ppiqdPuD5d9B0BU2ldgz3EInaaAT4Uf4UsVdIigI613oaGszvM-GGQ" />
+            <div class="relative z-10 flex flex-col items-center text-center p-6">
+                <div class="bg-white/20 backdrop-blur-md p-4 rounded-full mb-4 border border-white/30">
+                    <span class="material-symbols-outlined text-white text-5xl"
+                        data-icon="work_history">work_history</span>
+                </div>
+                <h1 class="font-display-time text-display-time text-white tracking-wider mb-1">CHẤM CÔNG</h1>
+                <p class="font-status-text text-status-text text-blue-100 opacity-90">Quản lý thời gian làm việc mọi
+                    lúc, mọi nơi</p>
+            </div>
+        </div>
+        <div
+            class="w-full glass-card rounded-3xl p-padding-element shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
+            <form class="space-y-5">
+                <div class="space-y-2">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant block ml-1">Tên đăng
+                        nhập</label>
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors"
+                            data-icon="person">person</span>
+                        <input
+                            class="w-full pl-12 pr-4 py-4 bg-surface-container-low border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-body-main text-body-main placeholder:text-outline/60"
+                            placeholder="Nhập tài khoản của bạn" type="text" />
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant block ml-1">Mật khẩu</label>
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors"
+                            data-icon="lock">lock</span>
+                        <input
+                            class="w-full pl-12 pr-12 py-4 bg-surface-container-low border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-body-main text-body-main placeholder:text-outline/60"
+                            placeholder="••••••••" type="password" />
+                        <button
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors"
+                            type="button">
+                            <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between px-1">
+                    <label class="flex items-center space-x-2 cursor-pointer group">
+                        <input
+                            class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer"
+                            type="checkbox" />
+                        <span
+                            class="font-status-text text-status-text text-on-surface-variant group-hover:text-on-surface transition-colors">Ghi
+                            nhớ đăng nhập</span>
+                    </label>
+                    <a class="font-status-text text-status-text text-primary font-semibold hover:underline decoration-2 underline-offset-4"
+                        href="#">Quên mật khẩu?</a>
+                </div>
+                <button
+                    class="w-full py-4 bg-primary text-on-primary rounded-xl font-heading-md text-heading-md shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform hover:brightness-110"
+                    type="submit">
+                    Đăng nhập
+                </button>
+            </form>
+            <div class="mt-8 flex flex-col items-center">
+                <div class="w-full flex items-center space-x-4 mb-6">
+                    <div class="h-[1px] bg-outline-variant flex-grow"></div>
+                    <span class="font-label-caps text-label-caps text-outline uppercase tracking-widest">Hoặc đăng nhập
+                        với</span>
+                    <div class="h-[1px] bg-outline-variant flex-grow"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 w-full">
+                    <button
+                        class="flex items-center justify-center space-x-3 py-3 px-4 border border-outline-variant rounded-xl hover:bg-surface-container-high transition-colors group">
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors"
+                            data-icon="face_6">face_6</span>
+                        <span class="font-status-text text-status-text text-on-surface-variant">Face ID</span>
+                    </button>
+                    <button
+                        class="flex items-center justify-center space-x-3 py-3 px-4 border border-outline-variant rounded-xl hover:bg-surface-container-high transition-colors group">
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors"
+                            data-icon="fingerprint">fingerprint</span>
+                        <span class="font-status-text text-status-text text-on-surface-variant">Vân tay</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full py-6 flex flex-col items-center space-y-2">
+        <p class="font-label-caps text-[10px] text-outline uppercase tracking-[0.2em]">Phiên bản 1.0.0</p>
+        <div class="w-32 h-1.5 bg-on-surface/10 rounded-full"></div>
+    </footer>
+</body>
+
+</html>

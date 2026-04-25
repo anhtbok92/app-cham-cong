@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0070eb",
+                        "on-secondary-fixed": "#161c22",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414755",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#c64f00",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "surface-dim": "#d8d9e5",
+                        "surface-tint": "#005bc1",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0fc",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-container": "#5f656c",
+                        "on-background": "#181c23",
+                        "on-primary-fixed-variant": "#004493",
+                        "inverse-surface": "#2d3039",
+                        "surface-container": "#ecedf9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8f3",
+                        "secondary-fixed": "#dee3eb",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#9e3d00",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dee3eb",
+                        "inverse-primary": "#adc6ff",
+                        "outline": "#717786",
+                        "on-surface": "#181c23",
+                        "primary-fixed": "#d8e2ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#42474e",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-low": "#f1f3fe",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#e0e2ed",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-container-highest": "#e0e2ed",
+                        "secondary": "#595f66",
+                        "primary": "#0058bc",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-primary-container": "#fefcff",
+                        "secondary-fixed-dim": "#c2c7cf",
+                        "outline-variant": "#c1c6d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "gutter-card": "12px",
+                        "margin-page": "16px",
+                        "padding-element": "16px",
+                        "stack-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Manrope"],
+                        "body-main": ["Manrope"],
+                        "display-time": ["Manrope"],
+                        "heading-md": ["Manrope"],
+                        "status-text": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-time": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "heading-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "status-text": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen pb-24">
+    <!-- Top Navigation -->
+    <header
+        class="flex justify-between items-center px-4 h-16 w-full sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-3">
+            <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 transition-colors">
+                <span class="material-symbols-outlined text-on-surface" data-icon="arrow_back">arrow_back</span>
+            </button>
+            <h1 class="font-manrope text-lg font-bold text-blue-700">Hồ sơ cá nhân</h1>
+        </div>
+        <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 transition-colors">
+            <span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+        </button>
+    </header>
+    <main class="px-margin-page pt-6 space-y-6">
+        <!-- Profile Header Bento Card -->
+        <section class="grid grid-cols-12 gap-3">
+            <div
+                class="col-span-12 bg-white rounded-xl p-padding-element shadow-[0_2px_10px_rgba(0,0,0,0.06)] flex flex-col items-center text-center relative overflow-hidden">
+                <!-- Background Decorative Element -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+                <div class="relative mb-4">
+                    <img alt="Nguyễn Văn A" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+                        data-alt="professional headshot of a smiling asian businessman in his early 30s with a clean haircut and modern corporate attire"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrovBmu4Z2ddWN6SLQGJhLhA_a1CJ6IeGg39V8MvII9yZNsLgHl2WRfJoDDW9jgDS-GLjuev5ux4P5OIHx3BcxmASDj2i2W9joaKZ-gT3AGLchA2kRXThuudswo6ttUSILgEKpQHFwWLlzaOk07KA7sCyFPj7TB3lIl0Rncihzl_wdVMx_IFn22t5rnDlia6bxR3j-_1IiwSxg-2LGMwBBQuZsVt-kOJiHtFndnvO-zZvpNIBoqYDRLrqoO2QoWe3j4i5vcejl6g" />
+                    <button
+                        class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full shadow-lg border-2 border-white flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[18px]" data-icon="edit" data-weight="fill"
+                            style="font-variation-settings: 'FILL' 1;">edit</span>
+                    </button>
+                </div>
+                <h2 class="font-heading-md text-heading-md text-on-background">Nguyễn Văn A</h2>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-label-caps font-label-caps bg-blue-50 text-blue-600 px-2 py-0.5 rounded">ID:
+                        NV0123</span>
+                </div>
+                <p class="text-status-text font-status-text text-on-surface-variant mt-2">Nhân viên kinh doanh</p>
+            </div>
+        </section>
+        <!-- Information List -->
+        <section class="space-y-gutter-card">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="font-heading-md text-heading-md text-on-background">Thông tin cá nhân</h3>
+                <span class="text-blue-600 text-label-caps font-label-caps">Cập nhật</span>
+            </div>
+            <div
+                class="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.06)] divide-y divide-slate-100 overflow-hidden">
+                <!-- Data Row 1 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]" data-icon="cake">cake</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Ngày sinh</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium">15/05/1992</span>
+                </div>
+                <!-- Data Row 2 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]" data-icon="wc">wc</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Giới tính</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium">Nam</span>
+                </div>
+                <!-- Data Row 3 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]" data-icon="call">call</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Số điện thoại</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-blue-600 font-medium">0901 234 567</span>
+                </div>
+                <!-- Data Row 4 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]" data-icon="mail">mail</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Email</span>
+                    </div>
+                    <span
+                        class="text-body-main font-body-main text-on-surface font-medium">a.nguyen@timetrack.pro</span>
+                </div>
+                <!-- Data Row 5 -->
+                <div class="p-padding-element flex flex-col gap-1 hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]"
+                            data-icon="location_on">location_on</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Địa chỉ</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium ml-8">123 Đường ABC, Quận 1,
+                        TP. Hồ Chí Minh</span>
+                </div>
+                <!-- Data Row 6 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]"
+                            data-icon="calendar_today">calendar_today</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Ngày vào làm</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium">01/01/2020</span>
+                </div>
+                <!-- Data Row 7 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]"
+                            data-icon="groups">groups</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Phòng ban</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium">Kinh doanh miền Nam</span>
+                </div>
+                <!-- Data Row 8 -->
+                <div class="p-padding-element flex justify-between items-center hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]"
+                            data-icon="badge">badge</span>
+                        <span class="text-body-main font-body-main text-on-surface-variant">Chức vụ</span>
+                    </div>
+                    <span class="text-body-main font-body-main text-on-surface font-medium">Chuyên viên tư vấn</span>
+                </div>
+            </div>
+        </section>
+        <!-- Secondary Actions -->
+        <section class="grid grid-cols-2 gap-3 pb-8">
+            <div class="bg-blue-50 p-4 rounded-xl flex flex-col gap-2">
+                <span class="material-symbols-outlined text-blue-600" data-icon="security">security</span>
+                <span class="text-label-caps font-label-caps text-on-background">Bảo mật</span>
+            </div>
+            <div class="bg-slate-100 p-4 rounded-xl flex flex-col gap-2">
+                <span class="material-symbols-outlined text-slate-600" data-icon="settings">settings</span>
+                <span class="text-label-caps font-label-caps text-on-background">Cài đặt</span>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Navigation Bar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="font-manrope text-[10px] font-semibold mt-1">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="history">history</span>
+            <span class="font-manrope text-[10px] font-semibold mt-1">History</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span>
+            <span class="font-manrope text-[10px] font-semibold mt-1">Check-in</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+            <span class="font-manrope text-[10px] font-semibold mt-1">Request</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl px-3 py-1 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person" data-weight="fill"
+                style="font-variation-settings: 'FILL' 1;">person</span>
+            <span class="font-manrope text-[10px] font-semibold mt-1">Profile</span>
+        </a>
+    </nav>
+</body>
+
+</html>

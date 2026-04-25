@@ -1,0 +1,213 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { Department, JobPosition } from "@/lib/types";
+import LoadingState from "@/components/LoadingState";
+
+export default function JobPositionsPage() {
+  const [positions, setPositions] = useState<(JobPosition & { departments: { name: string } })[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [form, setForm] = useState({ name: "", department_id: "" });
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", department_id: "" });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [posRes, deptRes] = await Promise.all([
+        fetch("/api/admin/job-positions"),
+        fetch("/api/admin/departments")
+      ]);
+      const [posData, deptData] = await Promise.all([posRes.json(), deptRes.json()]);
+      setPositions(posData.jobPositions ?? []);
+      setDepartments(deptData.departments ?? []);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.department_id) {
+      setError("Vui lòng chọn phòng ban.");
+      return;
+    }
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/job-positions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setForm({ name: "", department_id: "" });
+        setShowAdd(false);
+        await fetchData();
+      } else {
+        const data = await res.json();
+        setError(data.message);
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleUpdate = async (id: string) => {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/job-positions/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editForm),
+      });
+      if (res.ok) {
+        setEditingId(null);
+        await fetchData();
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Bạn có chắc muốn xóa vị trí này?")) return;
+    await fetch(`/api/admin/job-positions/${id}`, { method: "DELETE" });
+    await fetchData();
+  };
+
+  return (
+    <div className="space-y-6  animate-in fade-in duration-500">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-h1 text-h1 text-on-surface">Vị trí công việc</h1>
+          <p className="text-body-sm text-on-surface-variant">Quản lý các chức vụ và vị trí theo phòng ban</p>
+        </div>
+        <button
+          onClick={() => setShowAdd(!showAdd)}
+          className="rounded-xl bg-secondary px-6 py-2.5 text-label-md font-bold text-white hover:bg-blue-700 shadow-lg shadow-secondary/20 transition-all active:scale-95 flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-[20px]">{showAdd ? "close" : "add_task"}</span>
+          {showAdd ? "Hủy bỏ" : "Thêm vị trí"}
+        </button>
+      </div>
+
+      {showAdd && (
+        <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm animate-in slide-in-from-top-2">
+          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input
+              type="text"
+              required
+              placeholder="Tên vị trí (VD: Bác sĩ, Kỹ thuật viên...)"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="md:col-span-1 rounded-lg border border-outline-variant px-4 py-2 text-body-md outline-none focus:border-secondary"
+            />
+            <select
+              required
+              value={form.department_id}
+              onChange={(e) => setForm({ ...form, department_id: e.target.value })}
+              className="md:col-span-1 rounded-lg border border-outline-variant px-4 py-2 text-body-md outline-none focus:border-secondary bg-white"
+            >
+              <option value="">-- Chọn phòng ban --</option>
+              {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-lg bg-primary-container px-8 py-2 text-label-md font-bold text-white hover:bg-primary disabled:opacity-50"
+            >
+              {saving ? "Đang lưu..." : "Lưu"}
+            </button>
+          </form>
+          {error && <p className="text-error text-xs mt-2 font-bold">{error}</p>}
+        </div>
+      )}
+
+      <div className="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+        {loading ? (
+          <LoadingState message="Đang tải danh sách vị trí công việc..." />
+        ) : positions.length === 0 ? (
+          <div className="py-20 text-center text-on-surface-variant">Chưa có vị trí công việc nào.</div>
+        ) : (
+          <table className="w-full text-left">
+            <thead className="bg-surface-container-low border-b border-outline-variant">
+              <tr>
+                <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Tên vị trí</th>
+                <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase">Phòng ban</th>
+                <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-outline-variant">
+              {positions.map((pos) => (
+                <tr key={pos.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-6 py-4">
+                    {editingId === pos.id ? (
+                      <input
+                        type="text"
+                        value={editForm.name}
+                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                        className="w-full rounded-lg border border-outline-variant px-3 py-1.5 text-body-md outline-none focus:border-secondary"
+                        autoFocus
+                      />
+                    ) : (
+                      <span className="text-body-md font-bold text-on-surface">{pos.name}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {editingId === pos.id ? (
+                      <select
+                        value={editForm.department_id}
+                        onChange={(e) => setEditForm({ ...editForm, department_id: e.target.value })}
+                        className="w-full rounded-lg border border-outline-variant px-3 py-1.5 text-body-md outline-none focus:border-secondary bg-white"
+                      >
+                        {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                      </select>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs font-bold text-secondary">
+                        {pos.departments?.name}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      {editingId === pos.id ? (
+                        <>
+                          <button onClick={() => handleUpdate(pos.id)} className="text-secondary font-bold text-label-md">Lưu</button>
+                          <button onClick={() => setEditingId(null)} className="text-on-surface-variant font-bold text-label-md">Hủy</button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => { setEditingId(pos.id); setEditForm({ name: pos.name, department_id: pos.department_id }); }}
+                            className="p-2 rounded-lg text-secondary hover:bg-secondary/10"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(pos.id)}
+                            className="p-2 rounded-lg text-error hover:bg-error/10"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">delete</span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}

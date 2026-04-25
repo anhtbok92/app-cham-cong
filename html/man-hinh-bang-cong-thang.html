@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#0070eb",
+                        "on-secondary-fixed": "#161c22",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414755",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#c64f00",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "surface-dim": "#d8d9e5",
+                        "surface-tint": "#005bc1",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0fc",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-container": "#5f656c",
+                        "on-background": "#181c23",
+                        "on-primary-fixed-variant": "#004493",
+                        "inverse-surface": "#2d3039",
+                        "surface-container": "#ecedf9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8f3",
+                        "secondary-fixed": "#dee3eb",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#9e3d00",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dee3eb",
+                        "inverse-primary": "#adc6ff",
+                        "outline": "#717786",
+                        "on-surface": "#181c23",
+                        "primary-fixed": "#d8e2ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#42474e",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-low": "#f1f3fe",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#e0e2ed",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-container-highest": "#e0e2ed",
+                        "secondary": "#595f66",
+                        "primary": "#0058bc",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-primary-container": "#fefcff",
+                        "secondary-fixed-dim": "#c2c7cf",
+                        "outline-variant": "#c1c6d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "gutter-card": "12px",
+                        "margin-page": "16px",
+                        "padding-element": "16px",
+                        "stack-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Manrope"],
+                        "body-main": ["Manrope"],
+                        "display-time": ["Manrope"],
+                        "heading-md": ["Manrope"],
+                        "status-text": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-time": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "heading-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "status-text": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #f9f9ff;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="text-on-surface">
+    <!-- TopAppBar -->
+    <header
+        class="flex justify-between items-center px-4 h-16 w-full sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-3">
+            <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 transition-colors">
+                <span class="material-symbols-outlined text-on-surface">arrow_back</span>
+            </button>
+            <h1 class="font-manrope text-lg font-bold text-blue-700 dark:text-blue-500">Bảng công tháng</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 transition-colors">
+                <span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+            </button>
+            <div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
+                <img alt="Employee Profile Picture"
+                    data-alt="Close up portrait of a professional corporate employee with a friendly smile, clean office background"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo5FDbJgLSyvGvM-0ZbXWb_IilTVloPvV2gHmEZaoWuGU2TOycLD8ykGHg_mDqdtQ_O0Y_0JtjYW3Y9gHvHOAqBFoSkxghk74i_VS-ooDb7PNtD4343bxAkbp_q5Dgyr_R4t0qZEfwu_m0igajRRRutWKMczyTHcVnOGAdASFuzCbsijweML5s0DO1WEBBJffkfKq5i3oRg9Ik8dAXKHbwLLjzdhgQn-50xpL8yrDtC3WbRTlwHphNdWmJtwS_zm-251BKtUpgBg" />
+            </div>
+        </div>
+    </header>
+    <main class="px-margin-page py-6 pb-24 space-y-6">
+        <!-- Month Selector Section -->
+        <section
+            class="flex items-center justify-between bg-white p-padding-element rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
+            <div class="flex flex-col">
+                <span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Thời gian</span>
+                <span class="font-heading-md text-heading-md text-on-surface">Tháng 05/2024</span>
+            </div>
+            <button
+                class="flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary font-semibold rounded-lg hover:bg-primary-container/20 transition-all">
+                <span class="material-symbols-outlined text-[20px]" data-icon="calendar_month">calendar_month</span>
+                <span class="font-body-main text-[14px]">Chọn tháng</span>
+            </button>
+        </section>
+        <!-- Calendar Section -->
+        <section class="bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] overflow-hidden">
+            <div class="calendar-grid text-center py-4 border-b border-surface-variant bg-surface-container-low">
+                <div class="font-label-caps text-label-caps text-outline">T2</div>
+                <div class="font-label-caps text-label-caps text-outline">T3</div>
+                <div class="font-label-caps text-label-caps text-outline">T4</div>
+                <div class="font-label-caps text-label-caps text-outline">T5</div>
+                <div class="font-label-caps text-label-caps text-outline">T6</div>
+                <div class="font-label-caps text-label-caps text-outline">T7</div>
+                <div class="font-label-caps text-label-caps text-outline text-error">CN</div>
+            </div>
+            <div class="calendar-grid p-2 gap-y-2">
+                <!-- Row 1 (Empty offsets) -->
+                <div class="h-14"></div>
+                <div class="h-14"></div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">1</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">2</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">3</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">4</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-error">5</span>
+                </div>
+                <!-- Row 2 -->
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">6</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">7</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">8</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">9</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">10</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">11</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-error">12</span>
+                </div>
+                <!-- Row 3 -->
+                <div
+                    class="flex flex-col items-center justify-center h-14 relative bg-primary/5 rounded-lg border border-primary/20">
+                    <span class="font-body-main text-primary font-bold">13</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-error"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">14</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">15</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                    </div>
+                </div>
+                <!-- ... continuing days ... -->
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">16</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">17</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-on-surface">18</span>
+                    <div class="flex gap-0.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center h-14 relative">
+                    <span class="font-body-main text-error">19</span>
+                </div>
+            </div>
+            <!-- Legend Section -->
+            <div class="p-padding-element bg-surface-container-lowest border-t border-surface-variant">
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                        <span class="font-status-text text-status-text text-outline">Đúng giờ</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                        <span class="font-status-text text-status-text text-outline">Đi muộn</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-error"></div>
+                        <span class="font-status-text text-status-text text-outline">Vắng mặt</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Summary Section (Bento Grid) -->
+        <section class="grid grid-cols-2 gap-3">
+            <div
+                class="col-span-2 bg-primary p-padding-element rounded-2xl flex justify-between items-center shadow-lg shadow-primary/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white"
+                            data-icon="event_available">event_available</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-white/80 font-label-caps text-label-caps">Tổng cộng</span>
+                        <span class="text-white font-display-time text-[24px]">24 công</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-white/40">chevron_right</span>
+            </div>
+            <div class="bg-white p-padding-element rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-1">
+                <span class="text-outline font-label-caps text-label-caps">Công chuẩn</span>
+                <div class="flex items-end gap-1">
+                    <span class="font-display-time text-[22px] text-on-surface">26</span>
+                    <span class="text-outline text-status-text mb-1">ngày</span>
+                </div>
+            </div>
+            <div class="bg-white p-padding-element rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-1">
+                <span class="text-tertiary font-label-caps text-label-caps">Làm thêm</span>
+                <div class="flex items-end gap-1">
+                    <span class="font-display-time text-[22px] text-tertiary">4</span>
+                    <span class="text-tertiary/60 text-status-text mb-1">giờ</span>
+                </div>
+            </div>
+            <div class="bg-white p-padding-element rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-1">
+                <span class="text-amber-600 font-label-caps text-label-caps">Đi muộn</span>
+                <div class="flex items-end gap-1">
+                    <span class="font-display-time text-[22px] text-amber-600">2</span>
+                    <span class="text-amber-600/60 text-status-text mb-1">lần</span>
+                </div>
+            </div>
+            <div class="bg-white p-padding-element rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-1">
+                <span class="text-error font-label-caps text-label-caps">Vắng</span>
+                <div class="flex items-end gap-1">
+                    <span class="font-display-time text-[22px] text-error">1</span>
+                    <span class="text-error/60 text-status-text mb-1">ngày</span>
+                </div>
+            </div>
+            <div
+                class="col-span-2 bg-slate-50 p-4 rounded-2xl flex justify-between items-center border border-dashed border-slate-300">
+                <span class="font-body-main text-on-surface">Nghỉ phép</span>
+                <span class="font-heading-md text-on-surface">0</span>
+            </div>
+        </section>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="font-manrope text-[10px] font-semibold">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl px-3 py-1 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="history"
+                style="font-variation-settings: 'FILL' 1;">history</span>
+            <span class="font-manrope text-[10px] font-semibold">History</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span>
+            <span class="font-manrope text-[10px] font-semibold">Check-in</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+            <span class="font-manrope text-[10px] font-semibold">Request</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 scale-95 active:scale-90 transition-transform duration-150"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="font-manrope text-[10px] font-semibold">Profile</span>
+        </a>
+    </nav>
+</body>
+
+</html>

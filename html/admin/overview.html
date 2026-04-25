@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#22438a",
+                        "surface-tint": "#3d5ca4",
+                        "on-tertiary-container": "#e27f5d",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "surface-container-high": "#e8e7ee",
+                        "on-tertiary-fixed": "#390c00",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dad9e0",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#fefcff",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container-low": "#f4f3fa",
+                        "outline": "#747782",
+                        "on-primary-fixed": "#001947",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c4c6d2",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-surface-variant": "#444651",
+                        "surface-bright": "#faf8ff",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1b20",
+                        "on-tertiary-fixed-variant": "#7a2f14",
+                        "secondary-container": "#316bf3",
+                        "inverse-primary": "#b1c5ff",
+                        "secondary": "#0051d5",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-primary-container": "#7a98e4",
+                        "tertiary": "#3b0d00",
+                        "tertiary-container": "#5e1b02",
+                        "surface-variant": "#e3e2e8",
+                        "inverse-surface": "#2f3035",
+                        "background": "#faf8ff",
+                        "on-surface": "#1a1b20",
+                        "primary": "#001a49",
+                        "inverse-on-surface": "#f1f0f7",
+                        "primary-container": "#002d74",
+                        "tertiary-fixed": "#ffdbd0",
+                        "primary-fixed": "#dae2ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e8",
+                        "surface-container": "#eeedf4",
+                        "surface": "#faf8ff",
+                        "on-secondary-fixed": "#00174b",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "container-padding": "24px",
+                        "grid-gutter": "20px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px"
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "h3": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "h1": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "stat-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen flex overflow-x-hidden">
+    <!-- SideNavBar Component -->
+    <aside class="fixed left-0 h-screen w-64 bg-[#002D74] text-white flex flex-col py-4 z-50">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-black text-white">Attendance Management</h1>
+            <p class="font-sans text-xs uppercase tracking-wider text-blue-100/70">HR Operations</p>
+        </div>
+        <nav class="flex flex-col space-y-1">
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="groups">groups</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Employee Management</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="domain">domain</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Department</span>
+            </a>
+            <a class="flex items-center gap-3 bg-blue-800/50 text-white border-l-4 border-blue-400 px-6 py-3 rounded-r-lg"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Attendance</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Work Shift</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Work Schedule</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="celebration">celebration</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Holidays</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="time_to_leave">time_to_leave</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Leave</span>
+            </a>
+            <a class="flex items-center gap-3 text-blue-100/70 px-6 py-3 hover:bg-blue-800/30 hover:text-white transition-all hover:translate-x-1 duration-200"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="more_time">more_time</span>
+                <span class="font-sans text-xs uppercase tracking-wider">Overtime</span>
+            </a>
+        </nav>
+    </aside>
+    <div class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- TopAppBar Component -->
+        <header
+            class="flex justify-between items-center px-6 h-16 w-full sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+            <div class="flex items-center gap-4">
+                <span
+                    class="font-label-md text-label-md text-[#002D74] font-semibold border-b-2 border-[#002D74] pb-1">Tổng
+                    quan</span>
+                <div class="h-4 w-px bg-slate-300 mx-2"></div>
+                <div
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-slate-50 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-on-surface-variant text-sm"
+                        data-icon="business">business</span>
+                    <span class="font-label-md text-label-md text-on-surface">Công ty TNHH ABC</span>
+                    <span class="material-symbols-outlined text-on-surface-variant text-sm"
+                        data-icon="expand_more">expand_more</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex gap-4">
+                    <button class="relative p-2 rounded-full hover:bg-slate-50 transition-colors">
+                        <span class="material-symbols-outlined text-slate-500"
+                            data-icon="notifications">notifications</span>
+                        <span
+                            class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-slate-50 transition-colors">
+                        <span class="material-symbols-outlined text-slate-500" data-icon="settings">settings</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+                    <div class="text-right">
+                        <p class="font-label-md text-label-md text-on-surface font-semibold">Nguyễn Văn A</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-tight">System Admin</p>
+                    </div>
+                    <img alt="User profile"
+                        class="w-10 h-10 rounded-full border-2 border-primary-container object-cover"
+                        data-alt="Professional headshot of a middle-aged male administrator in a corporate setting with a neutral background"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLB-scmBPMFwFIyXuneI3eTAsmfS0OPuM5OGMJU2oKUtJoE6BkE9koONugJhSlIlTbyxiuhlmOFWwQDZqZlMALsIYbQyoDDfhSF6sdlqyIwQlhtem_fCscyJES-nSXbzK4HdYUnQZmjshncjEEf-cdUzYtNyyNXcoZspLYGyTj54WjKrX8g0k-LznskD8ET5VGi40eDIJBGJYk_C6XGPjWrEQqE5kIOCql9mkkZk6bZKefuNlGbSoqrLTIgRNcPea4Y757Z1DSv9A" />
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Canvas -->
+        <main class="p-6 space-y-6 flex-1 overflow-y-auto">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+                <!-- Total Staff -->
+                <div
+                    class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 rounded-lg bg-blue-100 text-blue-700">
+                            <span class="material-symbols-outlined" data-icon="groups">groups</span>
+                        </div>
+                        <span
+                            class="font-label-sm text-label-sm text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+12%</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Tổng nhân sự</p>
+                        <p class="font-stat-lg text-stat-lg text-on-surface">256</p>
+                    </div>
+                </div>
+                <!-- Attendance -->
+                <div
+                    class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 rounded-lg bg-teal-100 text-teal-700">
+                            <span class="material-symbols-outlined" data-icon="how_to_reg">how_to_reg</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">72.7%</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Đã chấm công</p>
+                        <p class="font-stat-lg text-stat-lg text-on-surface">186</p>
+                    </div>
+                </div>
+                <!-- Late -->
+                <div
+                    class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 rounded-lg bg-amber-100 text-amber-700">
+                            <span class="material-symbols-outlined" data-icon="alarm_on">alarm_on</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-amber-600">7.0%</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Đi muộn</p>
+                        <p class="font-stat-lg text-stat-lg text-on-surface">18</p>
+                    </div>
+                </div>
+                <!-- Absent -->
+                <div
+                    class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 rounded-lg bg-red-100 text-red-700">
+                            <span class="material-symbols-outlined" data-icon="person_off">person_off</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-red-600">4.7%</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Vắng mặt</p>
+                        <p class="font-stat-lg text-stat-lg text-on-surface">12</p>
+                    </div>
+                </div>
+                <!-- Leave -->
+                <div
+                    class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 rounded-lg bg-purple-100 text-purple-700">
+                            <span class="material-symbols-outlined" data-icon="event_busy">event_busy</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-purple-600">7.8%</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="font-label-md text-label-md text-on-surface-variant">Nghỉ phép</p>
+                        <p class="font-stat-lg text-stat-lg text-on-surface">20</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Bento Dashboard Grid -->
+            <div class="grid grid-cols-12 gap-5">
+                <!-- Left Column (8/12) -->
+                <div class="col-span-12 lg:col-span-8 space-y-5">
+                    <!-- Line Chart Card -->
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-h2 text-h2 text-on-surface">Tổng quan chấm công (7 ngày)</h3>
+                            <div class="flex gap-2">
+                                <span
+                                    class="flex items-center gap-1.5 font-label-md text-label-md text-on-surface-variant">
+                                    <span class="w-3 h-3 rounded-full bg-secondary"></span> Đúng giờ
+                                </span>
+                                <span
+                                    class="flex items-center gap-1.5 font-label-md text-label-md text-on-surface-variant">
+                                    <span class="w-3 h-3 rounded-full bg-amber-400"></span> Đi muộn
+                                </span>
+                            </div>
+                        </div>
+                        <div class="h-64 relative overflow-hidden rounded-lg bg-slate-50 flex items-end px-4 gap-4">
+                            <!-- Visual placeholder for chart -->
+                            <div class="absolute inset-0 p-6 flex flex-col justify-between">
+                                <div class="w-full h-px bg-slate-200"></div>
+                                <div class="w-full h-px bg-slate-200"></div>
+                                <div class="w-full h-px bg-slate-200"></div>
+                                <div class="w-full h-px bg-slate-200"></div>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-32 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-24"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T2</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-40 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-36"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T3</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-28 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-16"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T4</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-44 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-40"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T5</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-36 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-28"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T6</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-20 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-12"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">T7</span>
+                            </div>
+                            <div class="flex-1 flex flex-col items-center gap-2 z-10">
+                                <div class="w-full bg-blue-100 rounded-t h-16 relative">
+                                    <div class="absolute bottom-0 w-full bg-secondary rounded-t h-8"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">CN</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Late Table Card -->
+                    <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-outline-variant flex justify-between items-center">
+                            <h3 class="font-h2 text-h2 text-on-surface">Nhân viên đi muộn hôm nay</h3>
+                            <button class="font-label-md text-label-md text-secondary">Xem tất cả</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-surface-container-low">
+                                    <tr>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">#</th>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">Nhân
+                                            viên</th>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">Phòng
+                                            ban</th>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">Giờ
+                                            vào</th>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">Giờ
+                                            quy định</th>
+                                        <th
+                                            class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant text-red-600">
+                                            Đi muộn</th>
+                                        <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">Ghi
+                                            chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant">
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">1</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-on-primary-fixed">
+                                                    NH</div>
+                                                <span
+                                                    class="font-body-sm text-body-sm text-on-surface font-medium">Nguyễn
+                                                    Hoàng</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">Kỹ thuật</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">08:15</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">08:00</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm font-semibold text-red-600">15p
+                                        </td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm text-slate-400 italic">Xe hỏng
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">2</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center font-label-sm text-on-secondary-fixed">
+                                                    TL</div>
+                                                <span class="font-body-sm text-body-sm text-on-surface font-medium">Trần
+                                                    Lan</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">Kế toán</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">08:30</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm">08:00</td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm font-semibold text-red-600">30p
+                                        </td>
+                                        <td class="px-6 py-4 font-body-sm text-body-sm text-slate-400 italic">Kẹt xe
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Abnormal Table Card -->
+                    <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                        <div class="p-6 flex flex-col gap-4">
+                            <h3 class="font-h2 text-h2 text-on-surface">Chấm công bất thường</h3>
+                            <div class="flex gap-4 border-b border-outline-variant">
+                                <button
+                                    class="pb-3 px-1 border-b-2 border-secondary font-label-md text-label-md text-secondary">Tất
+                                    cả</button>
+                                <button
+                                    class="pb-3 px-1 border-b-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Thiếu
+                                    giờ ra</button>
+                                <button
+                                    class="pb-3 px-1 border-b-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Thiếu
+                                    giờ vào</button>
+                                <button
+                                    class="pb-3 px-1 border-b-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Ra
+                                    ngoài trong giờ</button>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center text-on-surface-variant font-body-md">
+                            <span class="material-symbols-outlined text-4xl mb-2" data-icon="task_alt">task_alt</span>
+                            <p>Không có dữ liệu bất thường mới</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column (4/12) -->
+                <div class="col-span-12 lg:col-span-4 space-y-5">
+                    <!-- Donut Chart Card -->
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <h3 class="font-h2 text-h2 text-on-surface mb-6">Tỷ lệ theo phòng ban</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="relative w-32 h-32">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle class="text-slate-100" cx="64" cy="64" fill="transparent" r="50"
+                                        stroke="currentColor" stroke-width="12"></circle>
+                                    <circle class="text-secondary" cx="64" cy="64" fill="transparent" r="50"
+                                        stroke="currentColor" stroke-dasharray="314" stroke-dashoffset="100"
+                                        stroke-width="12"></circle>
+                                    <circle class="text-teal-500" cx="64" cy="64" fill="transparent" r="50"
+                                        stroke="currentColor" stroke-dasharray="314" stroke-dashoffset="250"
+                                        stroke-width="12"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                    <span class="font-h1 text-h1 text-on-surface">186</span>
+                                    <span class="text-[10px] text-slate-500 uppercase">Tổng</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                                    <span class="font-label-md text-label-md text-on-surface-variant">Kỹ thuật
+                                        (45%)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                                    <span class="font-label-md text-label-md text-on-surface-variant">Kế toán
+                                        (30%)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                                    <span class="font-label-md text-label-md text-on-surface-variant">Kinh doanh
+                                        (25%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Leave Requests -->
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-h2 text-h2 text-on-surface">Đơn nghỉ phép</h3>
+                            <span
+                                class="bg-error-container text-on-error-container px-2 py-0.5 rounded font-label-sm text-label-sm">4
+                                chờ</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <img alt="Avatar" class="w-10 h-10 rounded-full object-cover"
+                                        data-alt="Close-up portrait of a young professional woman with glasses, soft natural lighting, office background focus"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT08JDv_usaCSbT2ZL1qEPZEi1Yh7r8nD7jfDFMZh6q30L7sjKwj24GmWZutw-I4K2zrJAr6wOxQXAQRilYCbH_cgT_hxRDYZaQK21Exlpq5enYnT2_H8RKmNUoJ-zhYWrNI6cKCUtF2WtwSzhaN92o8Ie9d5aViPdtCyIB7G2W4QLePuewKB5lI67wNAgMqJZCD5hD7ZuaWJHXxDXmnDUHFeVb12z-SLFVPxZjB7mF2CoKEnBeY6-dOrhPlHDy93IAyxD6lbKP5M" />
+                                    <div>
+                                        <p class="font-body-sm text-body-sm font-semibold">Lê Thu Hà</p>
+                                        <p class="text-[11px] text-slate-500">Nghỉ phép năm • 2 ngày</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400"
+                                    data-icon="chevron_right">chevron_right</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-tertiary-fixed-dim flex items-center justify-center font-label-md text-on-tertiary-fixed">
+                                        TV</div>
+                                    <div>
+                                        <p class="font-body-sm text-body-sm font-semibold">Trần Văn Vĩnh</p>
+                                        <p class="text-[11px] text-slate-500">Nghỉ ốm • 1 ngày</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400"
+                                    data-icon="chevron_right">chevron_right</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Work Schedule -->
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <h3 class="font-h2 text-h2 text-on-surface mb-6">Lịch làm việc hôm nay</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 w-2 h-2 rounded-full bg-secondary"></div>
+                                <div class="flex-1 border-b border-outline-variant pb-4">
+                                    <p class="font-body-sm text-body-sm font-semibold">Ca hành chính</p>
+                                    <p class="text-[11px] text-slate-500">08:00 - 17:30 • 142 nhân viên</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 w-2 h-2 rounded-full bg-amber-400"></div>
+                                <div class="flex-1 border-b border-outline-variant pb-4">
+                                    <p class="font-body-sm text-body-sm font-semibold">Ca chiều</p>
+                                    <p class="text-[11px] text-slate-500">14:00 - 22:00 • 34 nhân viên</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 w-2 h-2 rounded-full bg-tertiary"></div>
+                                <div class="flex-1">
+                                    <p class="font-body-sm text-body-sm font-semibold">Ca đêm</p>
+                                    <p class="text-[11px] text-slate-500">22:00 - 06:00 • 12 nhân viên</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- System Notifications -->
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <h3 class="font-h2 text-h2 text-on-surface mb-4">Thông báo hệ thống</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-3">
+                                <span class="material-symbols-outlined text-secondary text-lg"
+                                    data-icon="info">info</span>
+                                <p class="text-[12px] text-on-surface-variant leading-tight">Cập nhật chính sách nghỉ
+                                    phép mới áp dụng từ 01/10/2023.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="material-symbols-outlined text-amber-500 text-lg"
+                                    data-icon="warning">warning</span>
+                                <p class="text-[12px] text-on-surface-variant leading-tight">Máy chấm công sảnh B đang
+                                    mất kết nối Internet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
