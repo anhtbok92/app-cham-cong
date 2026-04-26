@@ -88,6 +88,58 @@ export interface OfficeLocation {
   updated_at: string;
 }
 
+export interface Customer {
+  id: string;
+  stt: number | null;
+  loai: string | null;
+  ten_kh: string;
+  ho_ten_day_du: string | null;
+  so_dien_thoai: string | null;
+  tuoi: string | null;
+  dia_chi: string | null;
+  nghe_nghiep: string | null;
+  phan_loai_nghe_nghiep: string | null;
+  ngay_ra_data: string | null;
+  ngay_tao_lich: string | null;
+  ngay_gio_thuc_hien: string | null;
+  nguoi_tao_lich: string | null;
+  phong_kinh_doanh: string | null;
+  telesale: string | null;
+  telesale_phu: string | null;
+  le_tan: string | null;
+  le_tan_phu_1: string | null;
+  le_tan_phu_2: string | null;
+  dich_vu_chinh: string | null;
+  dich_vu_phat_sinh: string | null;
+  nguon: string | null;
+  nguon_gr: string | null;
+  bac_si_mkt: string | null;
+  team: string | null;
+  bao_gia: string | null;
+  ghi_chu_bao_gia: string | null;
+  doanh_thu: string | null;
+  no: string | null;
+  cach_di_chuyen: string | null;
+  ket_qua: string | null;
+  ghi_chu_telesale: string | null;
+  ghi_chu_co_so: string | null;
+  chi_nhanh: string | null;
+  source_file: string;
+  source_type: string;
+  bac_si: string | null;
+  lich_phau_thuat: string | null;
+  tong_so_buoi: string | null;
+  tinh_trang_truoc_dieu_tri: string | null;
+  phac_do_dieu_tri: string | null;
+  thuoc_dieu_tri: string | null;
+  may_cong_nghe_cao: string | null;
+  tai_kham: string | null;
+  lieu_trinh_dieu_tri: string | null;
+  ky_thuat_vien: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface AttendanceRecord {
   id: string;
   employee_id: string;

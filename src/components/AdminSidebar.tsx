@@ -18,6 +18,8 @@ const NAV_ITEMS = [
   { href: "/admin/leave", label: "Nghỉ phép", icon: "time_to_leave" },
   { href: "/admin/payroll", label: "Tính lương", icon: "payments" },
   { href: "/admin/overtime", label: "Làm thêm giờ", icon: "more_time", disabled: true },
+  { href: "/admin/customers", label: "Khách hàng CK", icon: "people" },
+  { href: "/admin/customers/ai", label: "AI Phân tích KH", icon: "smart_toy" },
   { href: "/admin/locations", label: "Cấu hình địa điểm", icon: "location_on" },
   { href: "/admin/settings", label: "Cài đặt hệ thống", icon: "settings" },
 ];
