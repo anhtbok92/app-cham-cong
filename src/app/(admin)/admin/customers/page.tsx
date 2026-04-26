@@ -74,7 +74,8 @@ export default function CustomersPage() {
   const [seeding, setSeeding] = useState(false);
   const [seedResult, setSeedResult] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const pageSize = 20;
+  const [pageSize, setPageSize] = useState(50);
+  const [goToPage, setGoToPage] = useState("");
 
   const fetchCustomers = useCallback(async () => {
     setLoading(true);
@@ -395,17 +396,53 @@ export default function CustomersPage() {
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-body-sm text-on-surface-variant">Trang {page}/{totalPages} · {total} khách hàng</p>
-          <div className="flex gap-2">
-            <button onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1}
-              className="rounded-lg border border-outline-variant px-4 py-2 text-label-md font-bold disabled:opacity-30 hover:bg-slate-50">Trước</button>
-            <button onClick={() => setPage(Math.min(totalPages, page + 1))} disabled={page === totalPages}
-              className="rounded-lg border border-outline-variant px-4 py-2 text-label-md font-bold disabled:opacity-30 hover:bg-slate-50">Sau</button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-xl border border-outline-variant shadow-sm p-3 sm:p-4">
+        <div className="flex items-center gap-3 flex-wrap">
+          <p className="text-body-sm text-on-surface-variant whitespace-nowrap">
+            Trang {page}/{totalPages} · {total} KH
+          </p>
+          <div className="flex items-center gap-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Hiển thị</label>
+            <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+              className="rounded-lg border border-outline-variant px-2 py-1 text-body-sm bg-white font-bold">
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+              <option value={1000}>1000</option>
+            </select>
           </div>
         </div>
-      )}
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Đến trang</label>
+            <input type="number" min={1} max={totalPages} value={goToPage} placeholder={String(page)}
+              onChange={(e) => setGoToPage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const p = parseInt(goToPage);
+                  if (p >= 1 && p <= totalPages) { setPage(p); setGoToPage(""); }
+                }
+              }}
+              className="w-16 rounded-lg border border-outline-variant px-2 py-1 text-body-sm text-center font-bold" />
+            <button onClick={() => { const p = parseInt(goToPage); if (p >= 1 && p <= totalPages) { setPage(p); setGoToPage(""); } }}
+              className="rounded-lg bg-slate-100 px-2 py-1 text-[11px] font-bold text-slate-600 hover:bg-slate-200">Go</button>
+          </div>
+          <div className="flex gap-1">
+            <button onClick={() => setPage(1)} disabled={page === 1}
+              className="rounded-lg border border-outline-variant px-2 py-1 text-label-md font-bold disabled:opacity-20 hover:bg-slate-50">
+              <span className="material-symbols-outlined text-[16px]">first_page</span></button>
+            <button onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1}
+              className="rounded-lg border border-outline-variant px-3 py-1 text-label-md font-bold disabled:opacity-20 hover:bg-slate-50">
+              <span className="material-symbols-outlined text-[16px]">chevron_left</span></button>
+            <button onClick={() => setPage(Math.min(totalPages, page + 1))} disabled={page === totalPages}
+              className="rounded-lg border border-outline-variant px-3 py-1 text-label-md font-bold disabled:opacity-20 hover:bg-slate-50">
+              <span className="material-symbols-outlined text-[16px]">chevron_right</span></button>
+            <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
+              className="rounded-lg border border-outline-variant px-2 py-1 text-label-md font-bold disabled:opacity-20 hover:bg-slate-50">
+              <span className="material-symbols-outlined text-[16px]">last_page</span></button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
