@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
   const dateTo = url.get("dateTo") || "";
   const excludeDateFrom = url.get("excludeDateFrom") || "";
   const excludeDateTo = url.get("excludeDateTo") || "";
+  const zaloStatus = url.get("zaloStatus") || "";
 
   // We need to fetch more data for client-side sorting by source_type priority
   // and for date filtering on text-based date fields
@@ -49,6 +50,11 @@ export async function GET(req: NextRequest) {
     query = query.ilike("chi_nhanh", "%Liễu Giai%");
   } else if (coSo === "HCM") {
     query = query.ilike("chi_nhanh", "%Nguyễn Du%");
+  }
+  if (zaloStatus === "chua_xu_ly") {
+    query = query.is("zalo_status", null);
+  } else if (zaloStatus) {
+    query = query.eq("zalo_status", zaloStatus);
   }
 
   // Date filters need post-processing since ngay_gio_thuc_hien is TEXT

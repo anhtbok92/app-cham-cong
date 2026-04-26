@@ -74,25 +74,25 @@ export default function CustomerAIPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] animate-in fade-in duration-500">
+    <div className="flex flex-col h-[calc(100vh-100px)] sm:h-[calc(100vh-120px)] animate-in fade-in duration-500">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 sm:mb-4">
         <div>
-          <h1 className="font-h1 text-h1 text-on-surface flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
-            AI Phân tích khách hàng
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-on-surface flex items-center gap-2">
+            <span className="material-symbols-outlined text-secondary text-[22px] sm:text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
+            AI Phân tích KH
           </h1>
-          <p className="text-body-sm text-on-surface-variant">
-            Hỏi AI bất kỳ điều gì về dữ liệu khách hàng CK — phân tích, thống kê, gợi ý chăm sóc
+          <p className="text-body-sm text-on-surface-variant hidden sm:block">
+            Hỏi AI bất kỳ điều gì về dữ liệu khách hàng CK
           </p>
         </div>
         {messages.length > 0 && (
           <button
             onClick={() => setMessages([])}
-            className="rounded-lg border border-outline-variant px-4 py-2 text-label-md font-bold text-on-surface-variant hover:bg-slate-50 transition-colors flex items-center gap-1.5"
+            className="rounded-lg border border-outline-variant px-3 py-1.5 sm:px-4 sm:py-2 text-label-md font-bold text-on-surface-variant hover:bg-slate-50 transition-colors flex items-center gap-1.5 self-start sm:self-auto"
           >
-            <span className="material-symbols-outlined text-[18px]">refresh</span>
-            Cuộc trò chuyện mới
+            <span className="material-symbols-outlined text-[16px] sm:text-[18px]">refresh</span>
+            <span className="text-xs sm:text-sm">Mới</span>
           </button>
         )}
       </div>
@@ -106,7 +106,7 @@ export default function CustomerAIPage() {
             <p className="text-body-sm text-on-surface-variant mb-6 max-w-md">
               AI sẽ đọc toàn bộ dữ liệu khách hàng CK và trả lời câu hỏi của bạn. Thử một số gợi ý bên dưới:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-w-2xl w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-2xl w-full px-2">
               {SUGGESTED_QUESTIONS.map((q) => (
                 <button
                   key={q}
@@ -123,7 +123,7 @@ export default function CustomerAIPage() {
           <>
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                <div className={`max-w-[92%] sm:max-w-[85%] rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 ${
                   msg.role === "user"
                     ? "bg-secondary text-white rounded-br-md"
                     : "bg-slate-50 border border-outline-variant text-on-surface rounded-bl-md"
@@ -165,15 +165,15 @@ export default function CustomerAIPage() {
       )}
 
       {/* Input */}
-      <div className="bg-white rounded-xl border border-outline-variant shadow-sm p-3 flex gap-3 items-end">
+      <div className="bg-white rounded-xl border border-outline-variant shadow-sm p-2 sm:p-3 flex gap-2 sm:gap-3 items-end">
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Hỏi AI về khách hàng... (Enter để gửi, Shift+Enter xuống dòng)"
+          placeholder="Hỏi AI về khách hàng..."
           rows={1}
-          className="flex-1 resize-none rounded-lg border border-outline-variant bg-surface-container-lowest px-4 py-2.5 text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all max-h-32"
+          className="flex-1 resize-none rounded-lg border border-outline-variant bg-surface-container-lowest px-3 sm:px-4 py-2 sm:py-2.5 text-body-sm sm:text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all max-h-32"
           style={{ minHeight: "42px" }}
           onInput={(e) => {
             const el = e.target as HTMLTextAreaElement;
@@ -184,10 +184,10 @@ export default function CustomerAIPage() {
         <button
           onClick={() => sendMessage()}
           disabled={!input.trim() || loading}
-          className="rounded-xl bg-secondary px-5 py-2.5 text-white font-bold hover:bg-blue-700 disabled:opacity-30 transition-all active:scale-95 flex items-center gap-1.5 shrink-0"
+          className="rounded-xl bg-secondary px-3 sm:px-5 py-2 sm:py-2.5 text-white font-bold hover:bg-blue-700 disabled:opacity-30 transition-all active:scale-95 flex items-center gap-1.5 shrink-0"
         >
-          <span className="material-symbols-outlined text-[20px]">send</span>
-          Gửi
+          <span className="material-symbols-outlined text-[18px] sm:text-[20px]">send</span>
+          <span className="hidden sm:inline">Gửi</span>
         </button>
       </div>
     </div>

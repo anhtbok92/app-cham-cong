@@ -32,6 +32,16 @@ const KET_QUA_OPTIONS = [
   "Failed", "Cơ sở từ chối", "Đã cọc", "Phẫu thuật",
 ];
 
+const ZALO_STATUS_OPTIONS = [
+  { value: "da_ket_ban", label: "Đã kết bạn Zalo", icon: "person_add", color: "bg-blue-100 text-blue-700" },
+  { value: "da_dong_y", label: "Đã đồng ý KB", icon: "handshake", color: "bg-cyan-100 text-cyan-700" },
+  { value: "da_nhan_tin", label: "Đã nhắn tin QC", icon: "chat", color: "bg-amber-100 text-amber-700" },
+  { value: "da_dong_y_lieu_trinh", label: "Đã đồng ý LT", icon: "verified", color: "bg-green-100 text-green-700" },
+];
+
+const ZALO_MAP: Record<string, { label: string; icon: string; color: string }> = {};
+for (const z of ZALO_STATUS_OPTIONS) ZALO_MAP[z.value] = z;
+
 interface Filters {
   tenKh: string;
   soDienThoai: string;
@@ -44,12 +54,14 @@ interface Filters {
   dateTo: string;
   excludeDateFrom: string;
   excludeDateTo: string;
+  zaloStatus: string;
 }
 
 const emptyFilters: Filters = {
   tenKh: "", soDienThoai: "", sourceType: "", ketQua: "",
   bacSi: "", dichVu: "", coSo: "",
   dateFrom: "", dateTo: "", excludeDateFrom: "", excludeDateTo: "",
+  zaloStatus: "",
 };
 
 export default function CustomersPage() {
@@ -70,7 +82,7 @@ export default function CustomersPage() {
       const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
       const keys: (keyof Filters)[] = [
         "tenKh", "soDienThoai", "sourceType", "ketQua", "bacSi", "dichVu", "coSo",
-        "dateFrom", "dateTo", "excludeDateFrom", "excludeDateTo",
+        "dateFrom", "dateTo", "excludeDateFrom", "excludeDateTo", "zaloStatus",
       ];
       for (const k of keys) {
         if (filters[k]) params.set(k, filters[k]);
@@ -101,22 +113,75 @@ export default function CustomersPage() {
     finally { setSeeding(false); }
   };
 
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPhones = async () => {
+    setExporting(true);
+    try {
+      const params = new URLSearchParams({ page: "1", pageSize: "9999" });
+      const keys2: (keyof Filters)[] = [
+        "tenKh", "soDienThoai", "sourceType", "ketQua", "bacSi", "dichVu", "coSo",
+        "dateFrom", "dateTo", "excludeDateFrom", "excludeDateTo", "zaloStatus",
+      ];
+      for (const k of keys2) {
+        if (filters[k]) params.set(k, filters[k]);
+      }
+      const res = await fetch(`/api/admin/customers?${params}`);
+      const data = await res.json();
+      const phones = (data.customers || [])
+        .map((c: Customer) => c.so_dien_thoai)
+        .filter((p: string | null) => p && p.trim())
+        .map((p: string) => p.trim());
+
+      // Deduplicate
+      const unique = Array.from(new Set(phones));
+
+      const blob = new Blob([unique.join("\n")], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `so-dien-thoai-${new Date().toISOString().slice(0, 10)}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const totalPages = Math.ceil(total / pageSize);
+
+  const updateZaloStatus = async (id: string, status: string | null) => {
+    await fetch(`/api/admin/customers/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ zalo_status: status }),
+    });
+    setCustomers((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, zalo_status: status } : c))
+    );
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="font-h1 text-h1 text-on-surface">Khách hàng CK</h1>
+          <h1 className="font-h1 text-h1 text-on-surface text-lg sm:text-xl lg:text-2xl">Khách hàng CK</h1>
           <p className="text-body-sm text-on-surface-variant">
-            Danh sách khách hàng cũ được import từ các file CSV ({total} khách hàng)
+            Danh sách khách hàng cũ ({total} khách hàng)
           </p>
         </div>
-        <button onClick={handleSeed} disabled={seeding}
-          className="rounded-xl bg-secondary px-6 py-2.5 text-label-md font-bold text-white hover:bg-blue-700 shadow-lg shadow-secondary/20 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50">
-          <span className="material-symbols-outlined text-[20px]">{seeding ? "hourglass_empty" : "upload_file"}</span>
-          {seeding ? "Đang import..." : "Import CSV"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={handleExportPhones} disabled={exporting || total === 0}
+            className="rounded-xl border border-outline-variant px-3 sm:px-5 py-2 sm:py-2.5 text-label-md font-bold text-on-surface hover:bg-slate-50 transition-all active:scale-95 flex items-center gap-1.5 disabled:opacity-40">
+            <span className="material-symbols-outlined text-[18px] sm:text-[20px]">{exporting ? "hourglass_empty" : "download"}</span>
+            <span className="hidden sm:inline">{exporting ? "Đang xuất..." : "Export SĐT"}</span>
+          </button>
+          <button onClick={handleSeed} disabled={seeding}
+            className="rounded-xl bg-secondary px-3 sm:px-6 py-2 sm:py-2.5 text-label-md font-bold text-white hover:bg-blue-700 shadow-lg shadow-secondary/20 transition-all active:scale-95 flex items-center gap-1.5 disabled:opacity-50">
+            <span className="material-symbols-outlined text-[18px] sm:text-[20px]">{seeding ? "hourglass_empty" : "upload_file"}</span>
+            <span className="hidden sm:inline">{seeding ? "Đang import..." : "Import CSV"}</span>
+          </button>
+        </div>
       </div>
 
       {seedResult && (
@@ -124,10 +189,10 @@ export default function CustomersPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-white p-5 rounded-xl border border-outline-variant shadow-sm">
-        <form onSubmit={applyFilters} className="space-y-4">
+      <div className="bg-white p-3 sm:p-5 rounded-xl border border-outline-variant shadow-sm">
+        <form onSubmit={applyFilters} className="space-y-3 sm:space-y-4">
           {/* Row 1: Basic filters */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <FilterInput icon="person" label="Tên khách hàng" placeholder="Nhập tên..."
               value={draft.tenKh} onChange={(v) => setDraft({ ...draft, tenKh: v })} />
             <FilterInput icon="call" label="Số điện thoại" placeholder="Nhập SĐT..."
@@ -139,13 +204,19 @@ export default function CustomersPage() {
           </div>
 
           {/* Row 2: Dropdowns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <FilterSelect label="Cơ sở" value={draft.coSo} onChange={(v) => setDraft({ ...draft, coSo: v })}
               options={[{ value: "", label: "Tất cả cơ sở" }, { value: "HN", label: "Hà Nội" }, { value: "HCM", label: "Hồ Chí Minh" }]} />
             <FilterSelect label="Loại" value={draft.sourceType} onChange={(v) => setDraft({ ...draft, sourceType: v })}
               options={[{ value: "", label: "Tất cả loại" }, { value: "treatment", label: "Điều trị" }, { value: "booking", label: "Booking" }, { value: "surgery", label: "Phẫu thuật" }]} />
             <FilterSelect label="Kết quả" value={draft.ketQua} onChange={(v) => setDraft({ ...draft, ketQua: v })}
               options={[{ value: "", label: "Tất cả kết quả" }, ...KET_QUA_OPTIONS.map((k) => ({ value: k, label: k }))]} />
+            <FilterSelect label="Trạng thái Zalo" value={draft.zaloStatus} onChange={(v) => setDraft({ ...draft, zaloStatus: v })}
+              options={[
+                { value: "", label: "Tất cả trạng thái" },
+                { value: "chua_xu_ly", label: "⚪ Chưa xử lý" },
+                ...ZALO_STATUS_OPTIONS.map((z) => ({ value: z.value, label: z.label })),
+              ]} />
             <div className="flex items-end gap-2">
               <button type="submit"
                 className="flex-1 rounded-lg bg-secondary px-4 py-2 text-label-md font-bold text-white hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5">
@@ -161,7 +232,7 @@ export default function CustomersPage() {
           </div>
 
           {/* Row 3: Date range filters */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-outline-variant">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-3 border-t border-outline-variant">
             {/* Inclusive date range */}
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold uppercase tracking-wider text-green-600 flex items-center gap-1">
@@ -214,6 +285,7 @@ export default function CustomersPage() {
                   <th className="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Dịch vụ</th>
                   <th className="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Bác sĩ</th>
                   <th className="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Kết quả</th>
+                  <th className="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Zalo</th>
                   <th className="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Loại</th>
                 </tr>
               </thead>
@@ -252,6 +324,22 @@ export default function CustomersPage() {
                           </span>
                         ) : <span className="text-slate-400 text-[11px]">-</span>}
                       </td>
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={c.zalo_status || ""}
+                          onChange={(e) => updateZaloStatus(c.id, e.target.value || null)}
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-bold border-0 outline-none cursor-pointer ${
+                            c.zalo_status && ZALO_MAP[c.zalo_status]
+                              ? ZALO_MAP[c.zalo_status].color
+                              : "bg-slate-50 text-slate-400"
+                          }`}
+                        >
+                          <option value="">⚪ Chưa xử lý</option>
+                          {ZALO_STATUS_OPTIONS.map((z) => (
+                            <option key={z.value} value={z.value}>{z.label}</option>
+                          ))}
+                        </select>
+                      </td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${SOURCE_TYPE_COLORS[c.source_type] || "bg-slate-100 text-slate-600"}`}>
                           {SOURCE_TYPE_LABELS[c.source_type] || c.source_type}
@@ -260,8 +348,8 @@ export default function CustomersPage() {
                     </tr>
                     {expandedId === c.id && (
                       <tr key={`${c.id}-detail`}>
-                        <td colSpan={6} className="px-6 py-4 bg-slate-50/80">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-body-sm">
+                        <td colSpan={7} className="px-3 sm:px-6 py-4 bg-slate-50/80">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-body-sm">
                             <DetailField label="Họ tên đầy đủ" value={c.ho_ten_day_du} />
                             <DetailField label="Tuổi" value={c.tuoi} />
                             <DetailField label="Nghề nghiệp" value={c.nghe_nghiep || c.phan_loai_nghe_nghiep} />
@@ -285,13 +373,13 @@ export default function CustomersPage() {
                               </>
                             )}
                             {c.ghi_chu_telesale && (
-                              <div className="md:col-span-3"><DetailField label="Ghi chú Telesale" value={c.ghi_chu_telesale} /></div>
+                              <div className="sm:col-span-2 lg:col-span-3"><DetailField label="Ghi chú Telesale" value={c.ghi_chu_telesale} /></div>
                             )}
                             {c.ghi_chu_co_so && (
-                              <div className="md:col-span-3"><DetailField label="Ghi chú cơ sở" value={c.ghi_chu_co_so} /></div>
+                              <div className="sm:col-span-2 lg:col-span-3"><DetailField label="Ghi chú cơ sở" value={c.ghi_chu_co_so} /></div>
                             )}
                             {c.tinh_trang_truoc_dieu_tri && (
-                              <div className="md:col-span-3"><DetailField label="Tình trạng trước điều trị" value={c.tinh_trang_truoc_dieu_tri} /></div>
+                              <div className="sm:col-span-2 lg:col-span-3"><DetailField label="Tình trạng trước điều trị" value={c.tinh_trang_truoc_dieu_tri} /></div>
                             )}
                           </div>
                           <div className="mt-3 pt-3 border-t border-slate-200 text-[10px] text-slate-400">File: {c.source_file}</div>

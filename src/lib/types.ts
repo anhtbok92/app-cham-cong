@@ -136,6 +136,7 @@ export interface Customer {
   tai_kham: string | null;
   lieu_trinh_dieu_tri: string | null;
   ky_thuat_vien: string | null;
+  zalo_status: string | null;
   created_at: string;
   updated_at: string;
 }
