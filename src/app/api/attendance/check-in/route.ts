@@ -59,27 +59,47 @@ export async function POST(request: NextRequest) {
     }, { status: 403 });
   }
 
-  // 5. Check for existing open session
-  const { data: activeRecord, error: activeError } = await supabase
+  // 5. Check for existing open sessions
+  const today = new Date().toISOString().split("T")[0];
+
+  const { data: activeRecords, error: activeError } = await supabase
     .from("attendance_records")
-    .select("id")
+    .select("id, date")
     .eq("employee_id", user.id)
-    .is("check_out_time", null)
-    .maybeSingle();
+    .is("check_out_time", null);
 
   if (activeError) {
     return NextResponse.json({ message: "Lỗi kiểm tra trạng thái chấm công." }, { status: 500 });
   }
 
-  if (activeRecord) {
-    return NextResponse.json({ 
-      message: "Bạn đang có một lượt chấm công chưa kết thúc. Vui lòng check-out trước khi bắt đầu lượt mới.",
-      code: "ACTIVE_SESSION" 
-    }, { status: 409 });
+  if (activeRecords && activeRecords.length > 0) {
+    // Tách phiên hôm nay và phiên từ ngày trước
+    const todaySession = activeRecords.find((r) => r.date === today);
+    const pastSessions = activeRecords.filter((r) => r.date !== today);
+
+    // Auto check-out các phiên từ ngày trước (user quên check-out)
+    if (pastSessions.length > 0) {
+      for (const session of pastSessions) {
+        await supabase
+          .from("attendance_records")
+          .update({
+            check_out_time: `${session.date}T23:59:59`,
+            notes: "Tự động check-out do quên check-out ngày hôm trước",
+          })
+          .eq("id", session.id);
+      }
+    }
+
+    // Nếu hôm nay đã có phiên chưa kết thúc thì mới chặn
+    if (todaySession) {
+      return NextResponse.json({
+        message: "Bạn đang có một lượt chấm công chưa kết thúc hôm nay. Vui lòng check-out trước khi bắt đầu lượt mới.",
+        code: "ACTIVE_SESSION"
+      }, { status: 409 });
+    }
   }
 
   // 6. Create record
-  const today = new Date().toISOString().split("T")[0];
   const { data: record, error: insertError } = await supabase
     .from("attendance_records")
     .insert({
