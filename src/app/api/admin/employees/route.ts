@@ -55,6 +55,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: authError.message }, { status: 400 });
     }
 
+    // Normalize empty strings to null so Postgres accepts date/uuid columns
+    const emptyToNull = (v: unknown) =>
+      v === "" || v === undefined ? null : v;
+
     // 2. Upsert the profile
     const { error: profileError } = await adminClient
       .from("profiles")
@@ -62,20 +66,23 @@ export async function POST(request: NextRequest) {
         id: authUser.user.id,
         full_name,
         email,
-        date_of_birth,
-        position,
-        address,
-        phone_number,
-        office_location_id,
-        department_id,
-        job_position_id,
+        date_of_birth: emptyToNull(date_of_birth),
+        position: emptyToNull(position),
+        address: emptyToNull(address),
+        phone_number: emptyToNull(phone_number),
+        office_location_id: emptyToNull(office_location_id),
+        department_id: emptyToNull(department_id),
+        job_position_id: emptyToNull(job_position_id),
         role: "employee",
         is_active: true
       });
 
     if (profileError) {
       await adminClient.auth.admin.deleteUser(authUser.user.id);
-      return NextResponse.json({ message: "Lỗi khi tạo hồ sơ nhân viên." }, { status: 500 });
+      return NextResponse.json(
+        { message: `Lỗi khi tạo hồ sơ nhân viên: ${profileError.message}` },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ message: "Tạo nhân viên thành công.", user: authUser.user });
