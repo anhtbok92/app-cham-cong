@@ -320,6 +320,13 @@ export default function EmployeesPage() {
                     <label className="text-label-sm font-bold uppercase">Số điện thoại</label>
                     <input type="text" value={addForm.phone_number} onChange={e => setAddForm({...addForm, phone_number: e.target.value})} className="w-full rounded-lg border border-outline-variant px-4 py-2 text-body-md" placeholder="090..." />
                   </div>
+                  <div className="space-y-1">
+                    <label className="text-label-sm font-bold uppercase">Địa điểm chấm công</label>
+                    <select value={addForm.office_location_id} onChange={e => setAddForm({...addForm, office_location_id: e.target.value})} className="w-full rounded-lg border border-outline-variant px-4 py-2 text-body-md bg-white">
+                      <option value="">Chưa gán</option>
+                      {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+                    </select>
+                  </div>
                 </div>
                 <div className="flex justify-end gap-3 pt-4 border-t">
                   <button type="button" onClick={() => setShowAddModal(false)} className="rounded-lg border px-6 py-2">Hủy</button>
